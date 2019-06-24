@@ -7,11 +7,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static pfbb.lcd.Digit.ZERO;
 
-/**
- * ...
- *
- * @author Pierre Fouché
- */
 class DigitTest {
 
     @Test
@@ -24,7 +19,6 @@ class DigitTest {
                 " _ \n" +
                 "| |\n" +
                 "|_|");
-
         //@formatter:on
     }
 

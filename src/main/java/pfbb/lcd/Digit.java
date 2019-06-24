@@ -2,16 +2,20 @@ package pfbb.lcd;
 
 import java.util.Arrays;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
 
 /**
- * ...
+ * Represent a single digit in a LCD display.
+ * Associates the digit standard representation (eg '7') to its LCD counterpart,
+ * made up of three lines containing the LCD segments.
  *
  * @author Pierre Fouché
  */
 public enum Digit {
-    //@formatter:off
+    // Declaring the 10 digits as follows makes it easy to visually validate each digit representation.
+    //@formatter:off (don't let the IDE play with indentation!)
     ZERO('0',
           " _ " +
           "| |" +
@@ -63,6 +67,10 @@ public enum Digit {
           "  |"),
     ;
     //@formatter:on
+
+    /**
+     * Holds the 10 digits indexed by their character representation.
+     */
     private static Map<Character, Digit> index;
 
     private final char symbol;
@@ -72,22 +80,18 @@ public enum Digit {
 
     Digit(char symbol, String content) {
         this.symbol = symbol;
-        this.line1 = content.substring(0,3);
-        this.line2 = content.substring(3,6);
-        this.line3 = content.substring(6,9);
+        this.line1 = content.substring(0, 3);
+        this.line2 = content.substring(3, 6);
+        this.line3 = content.substring(6, 9);
     }
 
     static {
-        index = Arrays.stream(values()).collect(Collectors.toMap(Digit::getSymbol, Function.identity()));
+        // Build the index, in Java 8 idiomatic way.
+        index = Arrays.stream(values()).collect(toMap(Digit::getSymbol, identity()));
     }
 
     public char getSymbol() {
         return symbol;
-    }
-
-    public String getRepresentation() {
-        String representation = String.join("\n", line1, line2, line3);
-        return representation;
     }
 
     public String getLine1() {
@@ -102,6 +106,18 @@ public enum Digit {
         return line3;
     }
 
+    /**
+     * Returns the digit LCD representation as a single String.
+     * Mostly used to test each digit representation.
+     */
+    public String getRepresentation() {
+        String representation = String.join("\n", line1, line2, line3);
+        return representation;
+    }
+
+    /**
+     * Returns the {@link Digit} matching the given character, if any.
+     */
     public static Digit findDigit(char symbol) {
         Digit digit = index.get(symbol);
         if (digit == null)
